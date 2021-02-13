@@ -11,6 +11,7 @@ import flixel.FlxObject;
 import flixel.FlxSprite;
 import flixel.FlxState;
 import flixel.FlxSubState;
+import flixel.addons.display.FlxShaderMaskCamera;
 import flixel.addons.display.FlxGridOverlay;
 import flixel.addons.effects.FlxTrail;
 import flixel.addons.effects.FlxTrailArea;
@@ -87,7 +88,7 @@ class PlayState extends MusicBeatState
 	private var iconP1:HealthIcon;
 	private var iconP2:HealthIcon;
 	private var camHUD:FlxCamera;
-	private var camGame:FlxCamera;
+	private var camGame:FlxShaderMaskCamera;
 
 	var dialogue:Array<String> = ['blah blah blah', 'coolswag'];
 
@@ -122,10 +123,16 @@ class PlayState extends MusicBeatState
 
 	var inCutscene:Bool = false;
 
+	var invert = new InvertShader();
+	
 	override public function create()
 	{
 		// var gameCam:FlxCamera = FlxG.camera;
-		camGame = new FlxCamera();
+		camGame = new FlxShaderMaskCamera(invert);
+		var mask = new FlxSprite(50, 50);
+		mask.makeGraphic(10000,10000);
+		camGame.addMaskObject(mask);
+
 		camHUD = new FlxCamera();
 		camHUD.bgColor.alpha = 0;
 
